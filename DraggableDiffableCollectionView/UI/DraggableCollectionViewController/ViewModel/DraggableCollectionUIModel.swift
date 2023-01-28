@@ -28,14 +28,14 @@ struct DraggableCollectionUIModel: IDraggableCollectionViewUIModel {
     private static let itemWidthAndHeight = (UIScreen.main.bounds.width - 20 - (sideSpacing * 2) - ( innerSpacing * 2)) / 3
     
     private var data: [DraggableCollectionViewItemModel] = [
-        DraggableCollectionViewItemModel(color: .blue),
-        DraggableCollectionViewItemModel(color: .brown),
-        DraggableCollectionViewItemModel(color: .green),
-        DraggableCollectionViewItemModel(color: .yellow),
-        DraggableCollectionViewItemModel(color: .red),
-        DraggableCollectionViewItemModel(color: .magenta),
-        DraggableCollectionViewItemModel(color: .purple),
-        DraggableCollectionViewItemModel(color: .orange)
+        DraggableCollectionViewItemModel(color: .systemBlue),
+        DraggableCollectionViewItemModel(color: .systemBrown),
+        DraggableCollectionViewItemModel(color: .systemGreen),
+        DraggableCollectionViewItemModel(color: .systemYellow),
+        DraggableCollectionViewItemModel(color: .systemRed),
+        DraggableCollectionViewItemModel(color: .systemMint),
+        DraggableCollectionViewItemModel(color: .black),
+        DraggableCollectionViewItemModel(color: .systemOrange)
     ]
     
     init() {

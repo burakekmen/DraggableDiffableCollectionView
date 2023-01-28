@@ -9,5 +9,6 @@ import Foundation
 import UIKit
 
 struct DraggableCollectionViewItemModel : Hashable {
+    let uuid: String = UUID().uuidString
     let color: UIColor
 }

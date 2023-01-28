@@ -28,12 +28,15 @@ class DraggableCollectionViewController: UIViewController {
         super.viewDidLoad()
         
         initializeCollectionView()
+        setupDataSource()
     }
 
     // MARK: Props
     lazy var dataSource: DraggableCollectionViewCellDataSource = DraggableCollectionViewCellDataSource(collectionView: self.collectionview) { collectionview, indexPath, itemIdentifier in
+        
         let cell = collectionview.dequeueReusableCell(forIndexPath: indexPath) as DraggableCollectionViewCell
         cell.configureCellWith(model: itemIdentifier)
+        
         return cell
     }
 }
@@ -56,10 +59,29 @@ extension DraggableCollectionViewController {
         self.collectionview.dataSource = dataSource
         self.collectionview.delegate = dataSource
         
-        var snaphot = NSDiffableDataSourceSnapshot<SingleSection, DraggableCollectionViewItemModel>()
-        snaphot.appendSections([.main])
-        snaphot.appendItems(viewModel._data, toSection: .main)
-        self.dataSource.apply(snaphot)
+        // MARK: Drag & Drop delegatelerini dinleyebilmek icin delegateleri tanımlariz
+        self.collectionview.dragDelegate = dataSource
+        self.collectionview.dropDelegate = dataSource
+        self.collectionview.dragInteractionEnabled = true
+    }
+    
+    private func setupDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<SingleSection, DraggableCollectionViewItemModel>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(viewModel._data, toSection: .main)
+        self.dataSource.apply(snapshot)
+        
+        dataSource.outputDelegate = self
+        dataSource.updateDataSource(items: viewModel._data)
+    }
+}
+
+extension DraggableCollectionViewController : DraggableCollectionViewCellDataSourceOutputDelegate {
+    func itemDropped() {
+        print("Items List\n")
+        for item in dataSource.getDataSourceItems() {
+            print("UUID: \(item.uuid), Color:  \(item.color.accessibilityName)")
+        }
     }
 }
 
