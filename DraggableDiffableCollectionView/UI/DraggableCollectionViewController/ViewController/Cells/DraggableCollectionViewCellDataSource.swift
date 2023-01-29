@@ -13,18 +13,7 @@ protocol DraggableCollectionViewCellDataSourceOutputDelegate : AnyObject {
 }
 
 final class DraggableCollectionViewCellDataSource: UICollectionViewDiffableDataSource<SingleSection, DraggableCollectionViewItemModel> {
-    
     weak var outputDelegate: DraggableCollectionViewCellDataSourceOutputDelegate?
-    
-    private var items: [DraggableCollectionViewItemModel] = []
-    
-    func updateDataSource(items: [DraggableCollectionViewItemModel]) {
-        self.items = items
-    }
-    
-    func getDataSourceItems() -> [DraggableCollectionViewItemModel] {
-        return items
-    }
 }
 
 extension DraggableCollectionViewCellDataSource: UICollectionViewDelegate {
@@ -35,6 +24,7 @@ extension DraggableCollectionViewCellDataSource: UICollectionViewDelegate {
 extension DraggableCollectionViewCellDataSource : UICollectionViewDragDelegate {
     // MARK: Drag yapilmak istenen cell item doner
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let items = snapshot().itemIdentifiers(inSection: .main)
         let item = items[indexPath.row]
         
         // MARK: ItemProvider olustururken objenizde uniq bir deger olmasi sarttir. Bu bilgi ile Drag islemi yapilmaktadir
@@ -107,8 +97,6 @@ extension DraggableCollectionViewCellDataSource {
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             
             // MARK: Islem sonunda ViewController tarafina haber vermesi icin outputDelegate tetikleniyor
-            let sourceItem = self.items.remove(at: sourceIndexPath.row)
-            self.items.insert(sourceItem, at: destinationIndexPath.item)
             outputDelegate?.itemDropped()
         }
     }

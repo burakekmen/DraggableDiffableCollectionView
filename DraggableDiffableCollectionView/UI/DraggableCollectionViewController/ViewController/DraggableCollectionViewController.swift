@@ -72,15 +72,18 @@ extension DraggableCollectionViewController {
         self.dataSource.apply(snapshot)
         
         dataSource.outputDelegate = self
-        dataSource.updateDataSource(items: viewModel._data)
     }
 }
 
 extension DraggableCollectionViewController : DraggableCollectionViewCellDataSourceOutputDelegate {
     func itemDropped() {
         print("Items List\n")
-        for item in dataSource.getDataSourceItems() {
-            print("UUID: \(item.uuid), Color:  \(item.color.accessibilityName)")
+        let items = dataSource.snapshot().itemIdentifiers(inSection: .main)
+        
+        if !items.isEmpty {
+            for item in items {
+                print("UUID: \(item.uuid), Color:  \(item.color.accessibilityName)")
+            }
         }
     }
 }
